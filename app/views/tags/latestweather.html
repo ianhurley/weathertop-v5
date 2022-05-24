@@ -1,0 +1,72 @@
+<table class="ui fixed inverted blue table">
+    <thead>
+
+    <tr>
+        <th>Latest Reading</th>
+        <th>Weather</th>
+        <th>Temp</th>
+        <th>Wind</th>
+        <th>Pressure</th>
+    </tr>
+    #{list items:_station.latestReading(), as:'reading'}
+    <tr>
+        <th><h1><i class="map marker alternate icon"></i></h1></th>
+        <th><h1>
+            #{if reading.code == 100}<i class="sun icon"></i>#{/if}
+            #{elseif reading.code == 200}<i class="cloud sun icon"></i>#{/elseif}
+            #{elseif reading.code == 300}<i class="cloud icon"></i>#{/elseif}
+            #{elseif reading.code == 400}<i class="cloud rain icon"></i>#{/elseif}
+            #{elseif reading.code == 500}<i class="cloud showers heavy icon"></i>#{/elseif}
+            #{elseif reading.code == 600}<i class="cloud sun rain icon"></i>#{/elseif}
+            #{elseif reading.code == 700}<i class="snowflake outline icon"></i>#{/elseif}
+            #{elseif reading.code == 800}<i class="bolt icon"></i>#{/elseif}
+            #{else}<i class="sun icon">#{/else}</h1></th>
+        <th><h1><i class="temperature low icon"></i></h1></th>
+        <th><h1><i class="wind icon"></i></h1></th>
+        <th><h1><i class="tachometer alternate icon"></i></h1></th>
+    </tr>
+    #{/list}
+
+
+
+    </thead>
+    <tbody>
+    #{list items:_station.latestReading(), as:'reading'}
+    <tr>
+        <td>
+            ${_station.name}<br>
+            <br>
+            <span class="ui small text">Latitude: ${_station.latitude.round(3)}</span> <br>
+            <span class="ui small text">Longitude: ${_station.longitude.round(3)}</span>
+        </td>
+
+        <td>
+            ${reading.codeWeather()}
+        </td>
+        <td>
+            ${reading.temperature} <span class="ui small text">&deg c</span><br>
+            ${reading.calcFahrenheit()} <span class="ui small text">&deg f</span><br>
+            <br>
+            <span class="ui small text">Min: ${_station.minTemp().temperature}</span><br>
+            <span class="ui small text">Max: ${_station.maxTemp().temperature}</span><br>
+        </td>
+        <td>
+            ${reading.calcBeaufort()} <span class="ui small text">bft</span> <br>
+            <span class="ui small text">${reading.compassDirection()}</span> <br>
+            <span class="ui small text">Feels like</span> <br>
+            <span class="ui small text">${reading.calcWindChill().round(1)}&deg c</span><br>
+            <br>
+            <span class="ui small text">Min: ${_station.minWind().windSpeed}</span><br>
+            <span class="ui small text">Max: ${_station.maxWind().windSpeed}</span><br>
+        </td>
+        <td>
+
+            ${reading.pressure} <span class="ui small text">hpa</span><br>
+            <br>
+            <span class="ui small text">Min: ${_station.minPressure().pressure}</span><br>
+            <span class="ui small text">Max: ${_station.maxPressure().pressure}</span><br>
+        </td>
+    </tr>
+    #{/list}
+    </tbody>
+</table>
